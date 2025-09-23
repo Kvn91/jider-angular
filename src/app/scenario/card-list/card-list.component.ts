@@ -5,7 +5,6 @@ import { Scenario } from '../scenario.model';
 
 @Component({
   selector: 'app-card-list',
-  standalone: true,
   imports: [CommonModule, CardComponent],
   templateUrl: './card-list.component.html',
 })

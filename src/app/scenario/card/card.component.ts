@@ -3,7 +3,6 @@ import { Scenario } from '../scenario.model';
 
 @Component({
   selector: 'app-card',
-  standalone: true,
   imports: [],
   templateUrl: './card.component.html',
 })

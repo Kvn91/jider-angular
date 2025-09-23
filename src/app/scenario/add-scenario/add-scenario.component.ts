@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-scenario',
-  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './add-scenario.component.html',
 })

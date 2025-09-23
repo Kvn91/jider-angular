@@ -8,7 +8,6 @@ import { Scenario } from './scenario/scenario.model';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     RouterOutlet,
     HeaderComponent,
