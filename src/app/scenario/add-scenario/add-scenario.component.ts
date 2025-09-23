@@ -1,27 +1,26 @@
-import { Component, output, ElementRef, viewChild } from '@angular/core';
+import { Component, output } from '@angular/core';
 
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-scenario',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './add-scenario.component.html',
 })
 export class AddScenarioComponent {
-  private form = viewChild.required<ElementRef<HTMLFormElement>>('form');
-
-  title = '';
-  description = '';
-
+  form = new FormGroup({
+    title: new FormControl(''),
+    description: new FormControl(''),
+  });
   addScenario = output<{ title: string; description: string }>();
 
-  submitForm() {
-    if (this.title.trim() && this.description.trim()) {
+  onSubmit() {
+    if (this.form.value.title?.trim() && this.form.value.description?.trim()) {
       this.addScenario.emit({
-        title: this.title,
-        description: this.description,
+        title: this.form.value.title,
+        description: this.form.value.description,
       });
-      this.form().nativeElement.reset();
+      this.form.reset;
     }
   }
 }

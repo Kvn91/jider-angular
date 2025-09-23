@@ -1,7 +1,7 @@
-<form (ngSubmit)="submitForm()" #form class="flex flex-col gap-4 max-w-xl mx-auto text-black">
-  <input type="text" [(ngModel)]="title" name="title" placeholder="Titre du scénario" class="border rounded p-2"
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 max-w-xl mx-auto text-black">
+  <input type="text" formControlName="title" name="title" placeholder="Titre du scénario" class="border rounded p-2"
     required />
-  <textarea [(ngModel)]="description" name="description" placeholder="Description du scénario"
+  <textarea formControlName="description" name="description" placeholder="Description du scénario"
     class="border rounded p-2" required></textarea>
   <button type="submit" class="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700">
     Ajouter le scénario
