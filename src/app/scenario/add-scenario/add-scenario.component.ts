@@ -1,10 +1,10 @@
 import { Component, output, ElementRef, viewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-scenario',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './add-scenario.component.html',
 })
 export class AddScenarioComponent {

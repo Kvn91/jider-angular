@@ -1,11 +1,11 @@
 import { Component, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { CardComponent } from '../card/card.component';
 import { Scenario } from '../scenario.model';
 
 @Component({
   selector: 'app-card-list',
-  imports: [CommonModule, CardComponent],
+  imports: [CardComponent],
   templateUrl: './card-list.component.html',
 })
 export class CardListComponent {
