@@ -1,6 +1,11 @@
 import { Component, output } from '@angular/core';
 
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-add-scenario',
@@ -9,8 +14,10 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class AddScenarioComponent {
   form = new FormGroup({
-    title: new FormControl(''),
-    description: new FormControl(''),
+    title: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(5)],
+    }),
+    description: new FormControl('', { validators: [Validators.required] }),
   });
   addScenario = output<{ title: string; description: string }>();
 
@@ -20,7 +27,7 @@ export class AddScenarioComponent {
         title: this.form.value.title,
         description: this.form.value.description,
       });
-      this.form.reset;
+      this.form.reset();
     }
   }
 }
