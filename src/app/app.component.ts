@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './layouts/header/header.component';
 import { FooterComponent } from './layouts/footer/footer.component';
-import { CardListComponent } from './scenario/card-list/card-list.component';
-import { AddScenarioComponent } from './scenario/add-scenario/add-scenario.component';
-import { Scenario } from './scenario/scenario.model';
+import { CardListComponent } from './scenarios/card-list/card-list.component';
+import { AddScenarioComponent } from './scenarios/add-scenario/add-scenario.component';
+import { Scenario } from './scenarios/scenario.model';
+import { ScenarioService } from './services/scenario.service';
 
 @Component({
   selector: 'app-root',
@@ -18,59 +19,62 @@ import { Scenario } from './scenario/scenario.model';
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-  scenarios: Scenario[] = [
-    {
-      id: 1,
-      title: 'Sauver le village',
-      description: 'Protéger le village contre une attaque imminente.',
-    },
-    {
-      id: 2,
-      title: 'La relique perdue',
-      description: 'Retrouver une relique disparue dans des ruines anciennes.',
-    },
-    {
-      id: 3,
-      title: 'L’ombre dans la forêt',
-      description: 'Enquêter sur des disparitions mystérieuses en forêt.',
-    },
-    {
-      id: 4,
-      title: 'Le complot royal',
-      description: 'Déjouer un complot contre la famille royale.',
-    },
-  ];
+  scenarios = signal<Scenario[]>([]);
+  isFetching = signal(false);
+  error = signal<string | null>(null);
+  private scenariosService = inject(ScenarioService);
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit() {
     this.loadScenarios();
   }
 
-  saveScenarios() {
-    localStorage.setItem('scenarios', JSON.stringify(this.scenarios));
-  }
-
   loadScenarios() {
-    const data = localStorage.getItem('scenarios');
-    if (data) {
-      this.scenarios = JSON.parse(data);
-    } else {
-      this.saveScenarios();
-    }
+    this.isFetching.set(true);
+    const subscription = this.scenariosService.fetchScenarios().subscribe({
+      next: (data) => {
+        this.scenarios.set(data);
+      },
+      error: (error) => {
+        console.error('Error fetching scenario:', error);
+        this.error.set(
+          'Erreur lors du chargement des scénarios. Veuillez réessayer plus tard.',
+        );
+        this.isFetching.set(false);
+      },
+      complete: () => {
+        this.isFetching.set(false);
+      },
+    });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
 
   onAddScenario(scenario: { title: string; description: string }) {
-    const lastScenario = this.scenarios.at(-1);
+    const lastScenario = this.scenarios().slice(-1)[0];
     const newId = lastScenario ? lastScenario.id + 1 : 1;
+    const newScenario = { ...scenario, id: newId };
 
-    this.scenarios.push({
-      ...scenario,
-      id: newId,
+    const subscription = this.scenariosService
+      .addScenario(newScenario)
+      .subscribe({
+        next: () => {
+          this.scenarios.update((scenarios) => [...scenarios, newScenario]);
+        },
+        error: (error) => {
+          console.error('Error adding scenario:', error);
+        },
+      });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
     });
-    this.saveScenarios();
   }
 
   onDeleteScenario(id: number) {
-    this.scenarios = this.scenarios.filter((scenario) => scenario.id !== id);
-    this.saveScenarios();
+    // this.scenarios = this.scenarios.filter((scenario) => scenario.id !== id);
+    // this.saveScenarios();
   }
 }
