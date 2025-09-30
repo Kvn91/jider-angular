@@ -4,8 +4,7 @@ import { HeaderComponent } from './layouts/header/header.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { CardListComponent } from './scenarios/card-list/card-list.component';
 import { AddScenarioComponent } from './scenarios/add-scenario/add-scenario.component';
-import { Scenario } from './scenarios/scenario.model';
-import { ScenarioService } from './services/scenario.service';
+import { ScenarioService } from './scenarios/scenario.service';
 
 @Component({
   selector: 'app-root',
@@ -19,11 +18,11 @@ import { ScenarioService } from './services/scenario.service';
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-  scenarios = signal<Scenario[]>([]);
+  private destroyRef = inject(DestroyRef);
   isFetching = signal(false);
   error = signal<string | null>(null);
   private scenariosService = inject(ScenarioService);
-  private destroyRef = inject(DestroyRef);
+  scenarios = this.scenariosService.loadedScenarios;
 
   ngOnInit() {
     this.loadScenarios();
@@ -32,9 +31,6 @@ export class AppComponent implements OnInit {
   loadScenarios() {
     this.isFetching.set(true);
     const subscription = this.scenariosService.fetchScenarios().subscribe({
-      next: (data) => {
-        this.scenarios.set(data);
-      },
       error: (error) => {
         console.error('Error fetching scenario:', error);
         this.error.set(
@@ -60,9 +56,6 @@ export class AppComponent implements OnInit {
     const subscription = this.scenariosService
       .addScenario(newScenario)
       .subscribe({
-        next: () => {
-          this.scenarios.update((scenarios) => [...scenarios, newScenario]);
-        },
         error: (error) => {
           console.error('Error adding scenario:', error);
         },
@@ -74,7 +67,14 @@ export class AppComponent implements OnInit {
   }
 
   onDeleteScenario(id: number) {
-    // this.scenarios = this.scenarios.filter((scenario) => scenario.id !== id);
-    // this.saveScenarios();
+    const subscription = this.scenariosService.deleteScenario(id).subscribe({
+      error: (error) => {
+        console.error('Error deleting scenario:', error);
+      },
+    });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
 }
