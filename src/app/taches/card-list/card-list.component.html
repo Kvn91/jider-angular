@@ -1,0 +1,7 @@
+<div class="flex flex-col gap-4">
+  @for (tache of taches(); track tache.id) {
+    <app-card
+      [tache]="tache"
+    />
+  }
+</div>

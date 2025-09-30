@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { Scenario } from '../scenario.model';
+import { Tache } from '../../taches/tache.model';
 
 @Component({
   selector: 'app-card',
@@ -7,10 +7,5 @@ import { Scenario } from '../scenario.model';
   templateUrl: './card.component.html',
 })
 export class CardComponent {
-  scenario = input.required<Scenario>();
-  delete = output<void>();
-
-  onDelete() {
-    this.delete.emit();
-  }
+  tache = input.required<Tache>();
 }

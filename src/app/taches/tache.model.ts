@@ -1,4 +1,4 @@
-export interface Scenario {
+export interface Tache {
   id: number;
   title: string;
   description: string;

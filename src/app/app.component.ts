@@ -2,10 +2,10 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './layouts/header/header.component';
 import { FooterComponent } from './layouts/footer/footer.component';
-import { CardListComponent } from './scenarios/card-list/card-list.component';
-import { AddScenarioComponent } from './scenarios/add-scenario/add-scenario.component';
-import { Scenario } from './scenarios/scenario.model';
-import { ScenarioService } from './services/scenario.service';
+import { CardListComponent } from './taches/card-list/card-list.component';
+import { AddTacheComponent } from './taches/add-tache/add-tache.component';
+import { Tache } from './taches/tache.model';
+import { TacheService } from './services/tache.service';
 
 @Component({
   selector: 'app-root',
@@ -14,29 +14,29 @@ import { ScenarioService } from './services/scenario.service';
     HeaderComponent,
     FooterComponent,
     CardListComponent,
-    AddScenarioComponent,
+    AddTacheComponent,
   ],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-  scenarios = signal<Scenario[]>([]);
+  taches = signal<Tache[]>([]);
   isFetching = signal(false);
   error = signal<string | null>(null);
-  private scenariosService = inject(ScenarioService);
+  private tachesService = inject(TacheService);
   private destroyRef = inject(DestroyRef);
 
   ngOnInit() {
-    this.loadScenarios();
+    this.loadTaches();
   }
 
-  loadScenarios() {
+  loadTaches() {
     this.isFetching.set(true);
-    const subscription = this.scenariosService.fetchScenarios().subscribe({
+    const subscription = this.tachesService.fetchTaches().subscribe({
       next: (data) => {
-        this.scenarios.set(data);
+        this.taches.set(data);
       },
       error: (error) => {
-        console.error('Error fetching scenario:', error);
+        console.error('Error fetching tache:', error);
         this.error.set(
           'Erreur lors du chargement des scénarios. Veuillez réessayer plus tard.',
         );
@@ -52,29 +52,22 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onAddScenario(scenario: { title: string; description: string }) {
-    const lastScenario = this.scenarios().slice(-1)[0];
-    const newId = lastScenario ? lastScenario.id + 1 : 1;
-    const newScenario = { ...scenario, id: newId };
+  onAddTache(tache: { title: string; description: string }) {
+    const lastTache = this.taches().slice(-1)[0];
+    const newId = lastTache ? lastTache.id + 1 : 1;
+    const newTache = { ...tache, id: newId };
 
-    const subscription = this.scenariosService
-      .addScenario(newScenario)
-      .subscribe({
-        next: () => {
-          this.scenarios.update((scenarios) => [...scenarios, newScenario]);
-        },
-        error: (error) => {
-          console.error('Error adding scenario:', error);
-        },
-      });
+    const subscription = this.tachesService.addTache(newTache).subscribe({
+      next: () => {
+        this.taches.update((taches) => [...taches, newTache]);
+      },
+      error: (error) => {
+        console.error('Error adding tache:', error);
+      },
+    });
 
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
     });
-  }
-
-  onDeleteScenario(id: number) {
-    // this.scenarios = this.scenarios.filter((scenario) => scenario.id !== id);
-    // this.saveScenarios();
   }
 }

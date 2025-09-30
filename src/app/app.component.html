@@ -4,13 +4,13 @@
     <section id="prez" class="p-6 mt-6 scroll-mt-40 flex flex-col widescreen:section-min-height section-min-height">
       <article class="">
         <h2 class="font-bold text-4xl text-center sm:text-left text-slate-900 dark:text-white sm:text-5xl">
-          Bienvenue sur ton créateur de jeu de rôle
+          Bienvenue sur ton gestionnaire de tâches
         </h2>
         <ul class="mt-12 mb-4 text-1xl sm:text-3xl list-disc list-inside">
-          <li class="mb-4">Créé un nouveau scénario</li>
-          <li class="mb-4">Ajoute des lieux et des personnages</li>
+          <li class="mb-4">Créé une nouvelle tâche</li>
+          <li class="mb-4">Attribue une priorité, une deadline</li>
           <li class="mb-4">Créé des liens entre tous tes items</li>
-          <li class="mb-4">Navigue facilement pendant ton mastering</li>
+          <li class="mb-4">Navigue facilement d'une tâche à l'autre</li>
         </ul>
       </article>
       <figure class="mt-12 sm:mt-52 mb-8">
@@ -23,28 +23,28 @@
       </figure>
     </section>
     <hr class="mx-auto bg-black w-1/2 sm:w-auto" />
-    <section id="scenarios" class="p-6 scroll-mt-16 widescreen:section-min-height tallscreen:section-min-height">
+    <section id="taches" class="p-6 scroll-mt-16 widescreen:section-min-height tallscreen:section-min-height">
       <div class="flex flex-col gap-6 sm:flex-row justify-between items-center">
         <h2 class="text-4xl mb-2 font-bold text-center sm:text-left sm:text-4xl text-slate-900 dark:text-white">
-          Mes scénarios
+          Mes tâches
         </h2>
       </div>
       @if (isFetching()) {
         <p class="text-center text-gray-500 mt-6">Chargement des scénarios...</p>
       } @else if (error()) {
         <p class="text-center text-red-500 mt-6">{{ error() }}</p>
-      } @else if (scenarios().length === 0) {
-        <p class="text-center text-gray-500 mt-6">Aucun scénario disponible.</p>
+      } @else if (taches().length === 0) {
+        <p class="text-center text-gray-500 mt-6">Aucune tâche disponible.</p>
       } @else {
-        <app-card-list [scenarios]="scenarios()" (deleteScenario)="onDeleteScenario($event)"></app-card-list>
+        <app-card-list [taches]="taches()"></app-card-list>
       }
     </section>
     <hr class="mx-auto bg-black w-1/2 sm:w-auto" />
     <section id="creation" class="p-6 mt-6 scroll-mt-16 widescreen:section-min-height tallscreen:section-min-height">
       <h2 class="text-4xl font-bold text-center sm:text-left sm:text-4xl mb-6 text-slate-900 dark:text-white">
-        Création d'un nouveau scénario
+        Création d'une nouvelle tâche
       </h2>
-      <app-add-scenario (addScenario)="onAddScenario($event)"></app-add-scenario>
+      <app-add-tache (addTache)="onAddTache($event)"></app-add-tache>
     </section>
   </main>
   <app-footer />
