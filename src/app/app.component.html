@@ -30,7 +30,7 @@
         </h2>
       </div>
       @if (isFetching()) {
-        <p class="text-center text-gray-500 mt-6">Chargement des scénarios...</p>
+        <p class="text-center text-gray-500 mt-6">Chargement des tâches...</p>
       } @else if (error()) {
         <p class="text-center text-red-500 mt-6">{{ error() }}</p>
       } @else if (taches().length === 0) {
