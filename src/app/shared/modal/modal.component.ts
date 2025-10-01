@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, viewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  viewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 
 @Component({
   selector: 'app-modal',

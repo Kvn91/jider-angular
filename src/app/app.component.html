@@ -1,3 +1,6 @@
+@if (error()) {
+  <app-error-modal title="Une erreur est survenue" [message]="error()" />
+}
 <div class="w-full h-screen flex flex-col justify-start">
   <app-header />
   <main class="grow">
@@ -24,20 +27,7 @@
     </section>
     <hr class="mx-auto bg-black w-1/2 sm:w-auto" />
     <section id="scenarios" class="p-6 scroll-mt-16 widescreen:section-min-height tallscreen:section-min-height">
-      <div class="flex flex-col gap-6 sm:flex-row justify-between items-center">
-        <h2 class="text-4xl mb-2 font-bold text-center sm:text-left sm:text-4xl text-slate-900 dark:text-white">
-          Mes scénarios
-        </h2>
-      </div>
-      @if (isFetching()) {
-        <p class="text-center text-gray-500 mt-6">Chargement des scénarios...</p>
-      } @else if (error()) {
-        <p class="text-center text-red-500 mt-6">{{ error() }}</p>
-      } @else if (scenarios().length === 0) {
-        <p class="text-center text-gray-500 mt-6">Aucun scénario disponible.</p>
-      } @else {
-        <app-card-list [scenarios]="scenarios()" (deleteScenario)="onDeleteScenario($event)"></app-card-list>
-      }
+      <app-scenarios/>
     </section>
     <hr class="mx-auto bg-black w-1/2 sm:w-auto" />
     <section id="creation" class="p-6 mt-6 scroll-mt-16 widescreen:section-min-height tallscreen:section-min-height">

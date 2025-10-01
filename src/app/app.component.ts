@@ -2,9 +2,11 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './layouts/header/header.component';
 import { FooterComponent } from './layouts/footer/footer.component';
-import { CardListComponent } from './scenarios/card-list/card-list.component';
 import { AddScenarioComponent } from './scenarios/add-scenario/add-scenario.component';
 import { ScenarioService } from './scenarios/scenario.service';
+import { ErrorService } from './shared/error.service';
+import { ErrorModalComponent } from './shared/modal/error-modal/error-modal.component';
+import { ScenariosComponent } from './scenarios/scenarios/scenarios.component';
 
 @Component({
   selector: 'app-root',
@@ -12,41 +14,18 @@ import { ScenarioService } from './scenarios/scenario.service';
     RouterOutlet,
     HeaderComponent,
     FooterComponent,
-    CardListComponent,
     AddScenarioComponent,
+    ErrorModalComponent,
+    ScenariosComponent,
   ],
   templateUrl: './app.component.html',
 })
-export class AppComponent implements OnInit {
-  private destroyRef = inject(DestroyRef);
-  isFetching = signal(false);
-  error = signal<string | null>(null);
+export class AppComponent {
   private scenariosService = inject(ScenarioService);
   scenarios = this.scenariosService.loadedScenarios;
-
-  ngOnInit() {
-    this.loadScenarios();
-  }
-
-  loadScenarios() {
-    this.isFetching.set(true);
-    const subscription = this.scenariosService.fetchScenarios().subscribe({
-      error: (error) => {
-        console.error('Error fetching scenario:', error);
-        this.error.set(
-          'Erreur lors du chargement des scénarios. Veuillez réessayer plus tard.',
-        );
-        this.isFetching.set(false);
-      },
-      complete: () => {
-        this.isFetching.set(false);
-      },
-    });
-
-    this.destroyRef.onDestroy(() => {
-      subscription.unsubscribe();
-    });
-  }
+  private destroyRef = inject(DestroyRef);
+  private errorService = inject(ErrorService);
+  error = this.errorService.error;
 
   onAddScenario(scenario: { title: string; description: string }) {
     const lastScenario = this.scenarios().slice(-1)[0];
@@ -55,23 +34,7 @@ export class AppComponent implements OnInit {
 
     const subscription = this.scenariosService
       .addScenario(newScenario)
-      .subscribe({
-        error: (error) => {
-          console.error('Error adding scenario:', error);
-        },
-      });
-
-    this.destroyRef.onDestroy(() => {
-      subscription.unsubscribe();
-    });
-  }
-
-  onDeleteScenario(id: number) {
-    const subscription = this.scenariosService.deleteScenario(id).subscribe({
-      error: (error) => {
-        console.error('Error deleting scenario:', error);
-      },
-    });
+      .subscribe({});
 
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
