@@ -1,0 +1,9 @@
+@if (character() && !error()) {
+  <section>
+    <h2 class="text-3xl">Fiche de personnage</h2>
+    <div class="max-w-4xl mx-auto p-4">
+      <p>Nom : {{ character().name }}</p>
+      <p>Description : {{ character().description }}</p>
+    </div>
+  </section>
+}

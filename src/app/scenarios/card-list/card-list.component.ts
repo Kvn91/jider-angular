@@ -1,7 +1,7 @@
 import { Component, input, output } from '@angular/core';
 
 import { CardComponent } from '../card/card.component';
-import { Scenario } from '../scenario.model';
+import { Scenario } from '../../models/scenario.model';
 
 @Component({
   selector: 'app-card-list',
@@ -10,9 +10,9 @@ import { Scenario } from '../scenario.model';
 })
 export class CardListComponent {
   scenarios = input.required<Scenario[]>();
-  deleteScenario = output<number>();
+  deleteScenario = output<string>();
 
-  onDeleteScenario(id: number) {
-    this.deleteScenario.emit(id);
+  onDeleteScenario(_id: string) {
+    this.deleteScenario.emit(_id);
   }
 }

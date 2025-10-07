@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { CardListComponent } from '../card-list/card-list.component';
-import { ScenarioService } from '../scenario.service';
-import { ErrorService } from '../../shared/error.service';
+import { CardListComponent } from './card-list/card-list.component';
+import { ScenarioService } from './scenario.service';
+import { ErrorService } from './../shared/error.service';
 
 @Component({
   selector: 'app-scenarios',
@@ -33,7 +33,7 @@ export class ScenariosComponent implements OnInit {
     });
   }
 
-  onDeleteScenario(id: number) {
+  onDeleteScenario(id: string) {
     const subscription = this.scenariosService.deleteScenario(id).subscribe({});
 
     this.destroyRef.onDestroy(() => {

@@ -1,8 +1,5 @@
 <div class="flex flex-col gap-4">
-  @for (scenario of scenarios(); track scenario.id) {
-    <app-card
-      [scenario]="scenario"
-      (delete)="onDeleteScenario(scenario.id)"
-    />
+  @for (scenario of scenarios(); track scenario._id) {
+    <app-card [scenario]="scenario" (delete)="onDeleteScenario(scenario._id)" />
   }
 </div>
