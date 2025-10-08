@@ -1,1 +1,30 @@
-<router-outlet></router-outlet>
+  @if(!error()) {
+  <section>
+    <div class="p-4 max-w-4xl mx-auto">
+      <h1 class="text-5xl text-center font-bold mb-8">{{ scenario().title }}</h1>
+      <p class="text-lg text-slate-700 dark:text-slate-200 mb-6">{{ scenario().description }}</p>
+    </div>
+  </section>
+  <section class="w-1/2 p-4">
+    <div class="flex flex-row mb-4">
+      <h1 class="text-3xl">Personnages</h1>
+      <a [routerLink]="['/scenarios', scenario()._id, 'characters', 'new']"
+        class="ml-auto w-9 h-9 text-3xl text-center bg-fuchsia-900 hover:bg-fuchsia-950 text-white font-bold rounded no-underline">+</a>
+    </div>
+    @if (scenario().characters && scenario().characters.length === 0) {
+      <p class="text-center text-gray-500 mt-6">Vous n'avez pas encore créé de personnage.</p>
+    } @else if (scenario().characters && scenario().characters.length !== 0) {
+      @for (character of scenario().characters; track character._id) {
+        <a [routerLink]="['/scenarios', scenario()._id, 'characters', character._id]"
+          class="block p-4 mb-4 bg-white dark:bg-slate-800 rounded-lg shadow hover:dark:bg-slate-600 no-underline">
+          <h2 class="text-2xl font-bold mb-2">{{ character.name }}</h2>
+          <p class="text-lg text-slate-700 dark:text-slate-200">{{ character.description }}</p>
+        </a>
+      }
+    }
+  </section>
+} @else {
+  <div class="flex justify-center items-center h-screen">
+    <p class="text-3xl text-center mt-6">..Impossible de charger le scénario..</p>
+  </div>
+}

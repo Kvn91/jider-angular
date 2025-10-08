@@ -1,0 +1,15 @@
+<section class="max-w-xl mx-auto p-6">
+  <h2 class="text-4xl mb-6">Création de personnage</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 text-black">
+    <input type="text" formControlName="name" name="name" placeholder="Nom"
+      class="bg-amber-50 border rounded-sm p-2" required />
+    <textarea formControlName="description" name="description" placeholder="Description"
+      class="bg-amber-50 border rounded-sm p-2" required></textarea>
+    <div class="flex gap-4 justify-end">
+      <a [routerLink]="['/scenarios', scenarioId()]" class="bg-fuchsia-900 text-white rounded-sm px-4 py-2 hover:bg-fuchsia-950">Annuler</a>
+      <button type="submit" class="bg-fuchsia-900 text-white rounded-sm px-4 py-2 hover:bg-fuchsia-950">
+        Créer le personnage
+      </button>
+    </div>
+  </form>
+</section>

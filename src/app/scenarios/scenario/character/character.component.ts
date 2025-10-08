@@ -13,7 +13,7 @@ export class CharacterComponent {
   scenarioId = input.required<string>();
   private scenariosService = inject(ScenarioService);
   private errorService = inject(ErrorService);
-  error = this.errorService.error;
+  error = signal('');
   scenario = signal<Scenario>({} as Scenario);
   destroyRef = inject(DestroyRef);
   characterId = input.required<string>();
@@ -34,6 +34,12 @@ export class CharacterComponent {
               (c) => c._id === this.characterId(),
             ) as Character,
           );
+        },
+        error: (err) => {
+          this.errorService.showError(
+            'Une erreur est survenue lors du chargement du scénario.',
+          );
+          this.error.set(err);
         },
       });
 

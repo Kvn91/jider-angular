@@ -3,7 +3,8 @@ import { ScenariosComponent } from './scenarios/scenarios.component';
 import { HomeComponent } from './home/home.component';
 import { ScenarioComponent } from './scenarios/scenario/scenario.component';
 import { CharacterComponent } from './scenarios/scenario/character/character.component';
-import { SheetComponent } from './scenarios/scenario/sheet/sheet.component';
+import { AddCharacterComponent } from './scenarios/scenario/add-character/add-character.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -17,15 +18,17 @@ export const routes: Routes = [
   {
     path: 'scenarios/:scenarioId',
     component: ScenarioComponent,
-    children: [
-      {
-        path: 'sheet',
-        component: SheetComponent,
-      },
-      {
-        path: 'characterId/:characterId',
-        component: CharacterComponent,
-      },
-    ],
+  },
+  {
+    path: 'scenarios/:scenarioId/characters/new',
+    component: AddCharacterComponent,
+  },
+  {
+    path: 'scenarios/:scenarioId/characters/:characterId',
+    component: CharacterComponent,
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];

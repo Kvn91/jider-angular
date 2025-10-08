@@ -1,7 +1,15 @@
-@if (character() && !error()) {
-  <section>
+@if (error()) {
+  <div class="flex justify-center items-center h-screen">
+    <p class="text-3xl text-center mt-6">..Impossible de charger le scénario..</p>
+  </div>
+} @else if (!character()) {
+  <div class="flex justify-center items-center h-screen">
+    <p class="text-3xl text-center mt-6">..Impossible de trouver le personnage..</p>
+  </div>
+} @else {
+  <section class="p-4">
     <h2 class="text-3xl">Fiche de personnage</h2>
-    <div class="max-w-4xl mx-auto p-4">
+    <div class="p-4">
       <p>Nom : {{ character().name }}</p>
       <p>Description : {{ character().description }}</p>
     </div>

@@ -30,16 +30,9 @@ export class ScenarioService {
   }
 
   fetchSingleScenario(_id: string) {
-    return this.httpClient
-      .get<Scenario>(`http://localhost:3500/scenarios/${_id}`)
-      .pipe(
-        catchError((error) => {
-          console.error(error);
-          const errorMsg = `Erreur lors du chargement du scénario. Veuillez réessayer plus tard.`;
-          this.errorService.showError(errorMsg);
-          return throwError(() => new Error(errorMsg));
-        }),
-      );
+    return this.httpClient.get<Scenario>(
+      `http://localhost:3500/scenarios/${_id}`,
+    );
   }
 
   addScenario(scenario: { title: string; description: string }) {
@@ -47,8 +40,8 @@ export class ScenarioService {
       .post<Scenario>('http://localhost:3500/scenarios', scenario)
       .pipe(
         tap({
-          next: (newScenario) => {
-            this.scenarios.update((scenarios) => [...scenarios, newScenario]);
+          next: () => {
+            this.fetchScenarios;
           },
         }),
         catchError((error) => {
