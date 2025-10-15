@@ -5,6 +5,9 @@
       class="bg-amber-50 border rounded-sm p-2" required />
     <textarea formControlName="description" name="description" placeholder="Description"
       class="bg-amber-50 border rounded-sm p-2" required></textarea>
+    @if (form.controls.name.touched && form.controls.description.touched && form.invalid) {
+      <div class="-mt-4 text-sm text-red-600">Les champs sont obligatoires</div>
+    }
     <div class="flex gap-4 justify-end">
       <a [routerLink]="['/scenarios', scenarioId()]" class="bg-fuchsia-900 text-white rounded-sm px-4 py-2 hover:bg-fuchsia-950">Annuler</a>
       <button type="submit" class="bg-fuchsia-900 text-white rounded-sm px-4 py-2 hover:bg-fuchsia-950">

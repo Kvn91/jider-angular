@@ -1,9 +1,19 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 max-w-xl mx-auto text-black">
-  <input type="text" formControlName="title" name="title" placeholder="Titre du scénario" class="bg-amber-50 border rounded-sm p-2"
-    required />
-  <textarea formControlName="description" name="description" placeholder="Description du scénario"
-    class="bg-amber-50 border rounded-sm p-2" required></textarea>
-  <button type="submit" class="bg-fuchsia-900 text-white rounded-sm px-4 py-2 hover:bg-fuchsia-950">
-    Ajouter le scénario
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-8 max-w-xl mx-auto text-black">
+  <div class="relative flex flex-col">
+    <input type="text" formControlName="title" name="title" placeholder="Titre du scénario"
+      class="bg-amber-50 border rounded-sm p-2" required />
+    @if (form.controls.title.touched && form.controls.title.invalid) {
+      <div class="absolute -bottom-5 text-sm text-red-600">Titre de 5 caractères minimum obligatoire</div>
+    }
+  </div>
+  <div class="relative flex flex-col">
+    <textarea formControlName="description" name="description" placeholder="Description du scénario"
+      class="bg-amber-50 border rounded-sm p-2" required></textarea>
+    @if (form.controls.description.touched && form.controls.description.invalid) {
+      <div class="absolute -bottom-5 text-sm text-red-600">Description de 5 caractères minimum obligatoire</div>
+    }
+  </div>
+  <button type="submit" class="bg-fuchsia-900 text-white rounded-sm px-4 py-2 hover:bg-fuchsia-950 transition-colors duration-200">
+    Créer le scénario
   </button>
 </form>

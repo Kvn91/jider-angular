@@ -1,15 +1,15 @@
-  @if(!error()) {
+@if(!error()) {
   <section>
     <div class="p-4 max-w-4xl mx-auto">
       <h1 class="text-5xl text-center font-bold mb-8">{{ scenario().title }}</h1>
-      <p class="text-lg text-slate-700 dark:text-slate-200 mb-6">{{ scenario().description }}</p>
+      <p class="text-lg text-center text-slate-700 dark:text-slate-200 mb-6">{{ scenario().description }}</p>
     </div>
   </section>
   <section class="w-1/2 p-4">
-    <div class="flex flex-row mb-4">
+    <div class="flex flex-row items-center mb-4">
       <h1 class="text-3xl">Personnages</h1>
       <a [routerLink]="['/scenarios', scenario()._id, 'characters', 'new']"
-        class="ml-auto w-9 h-9 text-3xl text-center bg-fuchsia-900 hover:bg-fuchsia-950 text-white font-bold rounded no-underline">+</a>
+        class="ml-auto w-9 h-9 flex items-center justify-center bg-fuchsia-900 hover:bg-fuchsia-950 text-white text-3xl font-bold rounded-lg shadow-lg transition-colors duration-200 no-underline pb-1">+</a>
     </div>
     @if (scenario().characters && scenario().characters.length === 0) {
       <p class="text-center text-gray-500 mt-6">Vous n'avez pas encore créé de personnage.</p>

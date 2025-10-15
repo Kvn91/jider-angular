@@ -1,8 +1,8 @@
 import { Component, DestroyRef, inject, input, signal } from '@angular/core';
 import { Character } from '../../../models/character.model';
-import { ErrorService } from '../../../shared/error.service';
 import { Scenario } from '../../../models/scenario.model';
 import { ScenarioService } from '../../scenario.service';
+import { MessageType, ModalService } from '../../../shared/modal.service';
 
 @Component({
   selector: 'app-character',
@@ -12,7 +12,7 @@ import { ScenarioService } from '../../scenario.service';
 export class CharacterComponent {
   scenarioId = input.required<string>();
   private scenariosService = inject(ScenarioService);
-  private errorService = inject(ErrorService);
+  private modalService = inject(ModalService);
   error = signal('');
   scenario = signal<Scenario>({} as Scenario);
   destroyRef = inject(DestroyRef);
@@ -36,8 +36,9 @@ export class CharacterComponent {
           );
         },
         error: (err) => {
-          this.errorService.showError(
+          this.modalService.showModal(
             'Une erreur est survenue lors du chargement du scénario.',
+            MessageType.Error,
           );
           this.error.set(err);
         },

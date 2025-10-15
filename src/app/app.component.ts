@@ -2,8 +2,9 @@ import { Component, DestroyRef, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './layouts/header/header.component';
 import { FooterComponent } from './layouts/footer/footer.component';
-import { ErrorService } from './shared/error.service';
 import { ErrorModalComponent } from './shared/modal/error-modal/error-modal.component';
+import { ModalService } from './shared/modal.service';
+import { SuccessModalComponent } from './shared/modal/success-modal/success-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +13,13 @@ import { ErrorModalComponent } from './shared/modal/error-modal/error-modal.comp
     HeaderComponent,
     FooterComponent,
     ErrorModalComponent,
+    SuccessModalComponent,
     RouterOutlet,
   ],
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  private errorService = inject(ErrorService);
-  error = this.errorService.error;
+  private modalService = inject(ModalService);
+  message = this.modalService.message;
+  messageType = this.modalService.messageType;
 }

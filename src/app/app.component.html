@@ -1,5 +1,12 @@
-@if (error()) {
-  <app-error-modal title="ERREUR" [message]="error()" />
+@if (message()) {
+  @switch (messageType()) {
+    @case ('success') {
+      <app-success-modal title="SUCCÈS" [message]="message()" />
+    }
+    @case ('error') {
+      <app-error-modal title="ERREUR" [message]="message()" />
+    }
+  }
 }
 <div class="w-full h-screen flex flex-col justify-start">
   <app-header />

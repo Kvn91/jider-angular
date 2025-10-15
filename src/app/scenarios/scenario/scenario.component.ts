@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Scenario } from '../../models/scenario.model';
-import { ErrorService } from '../../shared/error.service';
 import { ScenarioService } from '../scenario.service';
+import { MessageType, ModalService } from '../../shared/modal.service';
 
 @Component({
   selector: 'app-scenario',
@@ -19,7 +19,7 @@ import { ScenarioService } from '../scenario.service';
 export class ScenarioComponent implements OnInit {
   scenarioId = input.required<string>();
   private scenariosService = inject(ScenarioService);
-  private errorService = inject(ErrorService);
+  private modalService = inject(ModalService);
   error = signal('');
   scenario = signal<Scenario>({} as Scenario);
   destroyRef = inject(DestroyRef);
@@ -36,8 +36,9 @@ export class ScenarioComponent implements OnInit {
           this.scenario.set(scenario);
         },
         error: (err) => {
-          this.errorService.showError(
+          this.modalService.showModal(
             'Une erreur est survenue lors du chargement du scénario.',
+            MessageType.Error,
           );
           this.error.set(err);
         },

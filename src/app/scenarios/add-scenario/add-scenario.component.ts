@@ -7,6 +7,11 @@ import {
   Validators,
 } from '@angular/forms';
 
+interface ScenarioForm {
+  title: string;
+  description: string;
+}
+
 @Component({
   selector: 'app-add-scenario',
   imports: [ReactiveFormsModule],
@@ -15,19 +20,21 @@ import {
 export class AddScenarioComponent {
   form = new FormGroup({
     title: new FormControl('', {
+      nonNullable: true,
       validators: [Validators.required, Validators.minLength(5)],
     }),
-    description: new FormControl('', { validators: [Validators.required] }),
+    description: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(5)],
+    }),
   });
-  addScenario = output<{ title: string; description: string }>();
+  addScenario = output<ScenarioForm>();
 
   onSubmit() {
-    if (this.form.value.title?.trim() && this.form.value.description?.trim()) {
-      this.addScenario.emit({
-        title: this.form.value.title,
-        description: this.form.value.description,
-      });
-      this.form.reset();
+    if (this.form.invalid) {
+      return;
     }
+    this.addScenario.emit(this.form.value as ScenarioForm);
+    this.form.reset();
   }
 }

@@ -3,12 +3,11 @@ import { ModalComponent } from '../modal.component';
 import { ModalService } from '../../modal.service';
 
 @Component({
-  selector: 'app-error-modal',
-  standalone: true,
+  selector: 'app-success-modal',
   imports: [ModalComponent],
-  templateUrl: './error-modal.component.html',
+  templateUrl: './success-modal.component.html',
 })
-export class ErrorModalComponent {
+export class SuccessModalComponent {
   title = input<string>();
   message = input<string>();
   private modalService = inject(ModalService);

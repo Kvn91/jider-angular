@@ -2,14 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Scenario } from '../models/scenario.model';
 import { catchError, tap, throwError } from 'rxjs';
-import { ErrorService } from '../shared/error.service';
+import { MessageType, ModalService } from '../shared/modal.service';
 
 @Injectable({ providedIn: 'root' })
 export class ScenarioService {
   private httpClient = inject(HttpClient);
   private scenarios = signal<Scenario[]>([]);
   loadedScenarios = this.scenarios.asReadonly();
-  private errorService = inject(ErrorService);
+  private modalService = inject(ModalService);
 
   fetchScenarios() {
     return this.httpClient
@@ -19,12 +19,6 @@ export class ScenarioService {
           next: (scenarios) => {
             this.scenarios.set(scenarios);
           },
-        }),
-        catchError((error) => {
-          console.error(error);
-          const errorMsg = `Erreur lors du chargement des scénarios. Veuillez réessayer plus tard.`;
-          this.errorService.showError(errorMsg);
-          return throwError(() => new Error(errorMsg));
         }),
       );
   }
@@ -40,14 +34,14 @@ export class ScenarioService {
       .post<Scenario>('http://localhost:3500/scenarios', scenario)
       .pipe(
         tap({
-          next: () => {
-            this.fetchScenarios;
+          next: (newScenario) => {
+            this.scenarios.update((scenarios) => [...scenarios, newScenario]);
           },
         }),
         catchError((error) => {
           console.error(error);
           const errorMsg = `Erreur lors de l'ajout d'un scénario. Veuillez réessayer plus tard.`;
-          this.errorService.showError(errorMsg);
+          this.modalService.showModal(errorMsg, MessageType.Error);
           return throwError(() => new Error(errorMsg));
         }),
       );
@@ -68,9 +62,20 @@ export class ScenarioService {
         catchError((error) => {
           console.error(error);
           const errorMsg = `Erreur lors de la suppression d'un scénario. Veuillez réessayer plus tard.`;
-          this.errorService.showError(errorMsg);
+          this.modalService.showModal(errorMsg, MessageType.Error);
           return throwError(() => new Error(errorMsg));
         }),
       );
+  }
+
+  addCharacter(params: {
+    scenarioId: string;
+    name: string;
+    description: string;
+  }) {
+    return this.httpClient.post<Scenario>(
+      `http://localhost:3500/scenarios/characters`,
+      params,
+    );
   }
 }
