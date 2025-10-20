@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { CardListComponent } from './card-list/card-list.component';
 import { ScenarioService } from './scenario.service';
-import { ModalService, MessageType } from '../shared/modal.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -22,7 +21,6 @@ export class ScenariosComponent implements OnInit {
   private scenariosService = inject(ScenarioService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  private modalService = inject(ModalService);
 
   isFetching = signal(false);
   error = signal('');
@@ -64,8 +62,7 @@ export class ScenariosComponent implements OnInit {
     this.isFetching.set(true);
     const subscription = this.scenariosService.fetchScenarios().subscribe({
       error: (err) => {
-        const errorMsg = `Erreur lors du chargement des scénarios. Veuillez réessayer plus tard.`;
-        this.modalService.showModal(errorMsg, MessageType.Error);
+        console.log(err);
         this.error.set(err);
       },
       complete: () => {

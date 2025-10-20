@@ -8,8 +8,13 @@
     </h1>
     <div>
       <nav class="md:block space-x-8 text-xl" aria-label="main">
-        <a href="#scenarios" class="hover:opacity-70">Mes scénarios</a>
-        <a href="#creation" class="hover:opacity-70">Création</a>
+        @if (isAuthenticated()) {
+          <a href="#scenarios" class="hover:opacity-70">Mes scénarios</a>
+          <a href="#creation" class="hover:opacity-70">Création</a>
+          <a (click)="onLogout()" class="cursor-pointer"><i class="fa-solid fa-right-from-bracket"></i></a>
+        } @else {
+          <a [routerLink]="['auth']"><i class="fa-solid fa-user"></i></a>
+        }
       </nav>
     </div>
   </section>
