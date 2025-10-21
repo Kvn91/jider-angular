@@ -9,6 +9,7 @@ import {
 } from './scenarios/scenario/add-character/add-character.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AuthComponent } from './auth/auth.component';
+import { AuthGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
   {
@@ -23,22 +24,26 @@ export const routes: Routes = [
   {
     path: 'scenarios',
     component: ScenariosComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'scenarios/:scenarioId',
     component: ScenarioComponent,
     title: 'Détails du scénario',
+    canActivate: [AuthGuard],
   },
   {
     path: 'scenarios/:scenarioId/characters/new',
     component: AddCharacterComponent,
     title: 'Ajouter un personnage',
     canDeactivate: [canLeaveNewCharacterPage],
+    canActivate: [AuthGuard],
   },
   {
     path: 'scenarios/:scenarioId/characters/:characterId',
     component: CharacterComponent,
     title: 'Détails du personnage',
+    canActivate: [AuthGuard],
   },
   {
     path: '**',

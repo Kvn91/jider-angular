@@ -8,10 +8,7 @@ import { AuthService } from '../../auth/auth.service';
   templateUrl: './header.component.html',
 })
 export class HeaderComponent {
-  private authService = inject(AuthService);
-  isAuthenticated = computed(() => {
-    return !!this.authService.user();
-  });
+  authService = inject(AuthService);
 
   onLogout() {
     this.authService.logout();

@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { catchError, finalize, map, Subject, tap, throwError } from 'rxjs';
 import { User } from '../models/user.model';
 import { Router } from '@angular/router';
@@ -21,6 +21,9 @@ export class AuthService {
   private tokenExpirationTimer: any;
   isRefreshing = signal(false);
   user = signal<User | null>(null);
+  isAuthenticated = computed(() => {
+    return !!this.user();
+  });
 
   register(userAuth: UserAuth) {
     return this.http
@@ -72,6 +75,7 @@ export class AuthService {
     );
 
     this.user.set(loadedUser);
+    this.autoLogout();
   }
 
   logout() {

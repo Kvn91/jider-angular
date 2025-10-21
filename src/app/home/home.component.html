@@ -19,14 +19,15 @@
     </blockquote>
   </figure>
 </section>
-<hr class="mx-auto bg-black w-1/2 sm:w-auto" />
-<section id="scenarios" class="p-6 scroll-mt-16 widescreen:section-min-height tallscreen:section-min-height">
-  <app-scenarios />
-</section>
-<hr class="mx-auto bg-black w-1/2 sm:w-auto" />
-<section id="creation" class="p-6 mt-6 scroll-mt-16 widescreen:section-min-height tallscreen:section-min-height">
-  <h2 class="text-4xl font-bold text-center sm:text-left sm:text-4xl mb-6 text-slate-900 dark:text-white">
-    Création d'un nouveau scénario
-  </h2>
-  <app-add-scenario (addScenario)="onAddScenario($event)"></app-add-scenario>
-</section>
+@if (authService.isAuthenticated()) {
+  <hr class="mx-auto bg-black w-1/2 sm:w-auto" />
+  <section id="scenarios" class="p-6 scroll-mt-16 widescreen:section-min-height tallscreen:section-min-height">
+    <app-scenarios />
+  </section><hr class="mx-auto bg-black w-1/2 sm:w-auto" />
+  <section id="creation" class="p-6 mt-6 scroll-mt-16 widescreen:section-min-height tallscreen:section-min-height">
+    <h2 class="text-4xl font-bold text-center sm:text-left sm:text-4xl mb-6 text-slate-900 dark:text-white">
+      Création d'un nouveau scénario
+    </h2>
+    <app-add-scenario (addScenario)="onAddScenario($event)"></app-add-scenario>
+  </section>
+}
